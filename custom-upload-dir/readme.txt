@@ -2,64 +2,80 @@
 Contributors: ulfben
 Donate link: https://www.amazon.com/gp/registry/wishlist/2QB6SQ5XX2U0N/105-3209188-5640446?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=21&y=17
 Tags: upload, organize, files, media
-Requires at least: 3.9
-Tested up to: 6.0.1
-Stable tag: 3.4.6
-Requires PHP: 5.2
+Requires at least: 5.7
+Tested up to: 7.1.3
+Stable tag: 3.5.0
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Keeps your uploaded files organized in smart folder structures.
+Choose your own upload folders using post titles, categories, dates and more. Keep files easy to find when browsing your server.
 
 == Description ==
-WordPress allow you to put uploads in year- and month-based folders. Custom Upload Dir is more flexible. You can construct paths from variables like post title, category, post author, post date [and many more](http://wordpress.org/extend/plugins/custom-upload-dir/screenshots/). 
+Ever opened your uploads folder over FTP and wondered which post an image belongs to?
 
-I created Custom Upload Dir ensure my file system is always mirroring the site structure. This ensures I can always find files manually when needed. It also simplifies backups and platform migrations. 
+Custom Upload Dir lets you choose a folder structure that fits your site. Keep each post's images together, group files by category or author, or separate PDFs from photos. Your files become easier to find on the server and easier to work with when making backups or moving your site.
 
-//*[Ulf Benjaminsson](http://www.ulfbenjaminsson.com)*
+Set up a path template once, then upload through WordPress as usual. Placeholders such as `%postname%` and `%category%` are filled in automatically for each new upload. You can combine them with ordinary folder names to create your own structure.
 
-= Changelog v. 3.4.6 (2020-07-17) =
+= A few useful examples =
 
-1. fixed a null dereference error. ([thanks, defotoverij](https://wordpress.org/support/topic/warning-array_key_exists-expects-parameter-2-to-be-array-null-given/)!)
+Suppose you upload `sunflowers.jpg` to a post called "Summer in the garden", published in July 2026 and filed under "Gardening". These templates would put it in:
 
-= Changelog v. 3.4.5 (2020-05-05) =
+* **A folder for each post:** `/%postname%/` → `/summer-in-the-garden/sunflowers.jpg`
+* **Year, month, then post:** `/%year%/%monthnum%/%postname%/` → `/2026/07/summer-in-the-garden/sunflowers.jpg`
+* **Category, then post:** `/%category%/%postname%/` → `/gardening/summer-in-the-garden/sunflowers.jpg`
+* **Separate folders for file extensions:** `/%file_ext%/` → `/jpg/sunflowers.jpg`. A PDF would go in `/pdf/`.
 
-1. added french translation (thanks, bibi699depreau!)
+These paths sit inside your site's upload folder, usually `wp-content/uploads`. Post folders use the post's URL slug, so a title such as "Summer in the garden" becomes `summer-in-the-garden`.
 
-= Changelog v. 3.4.4 (2019-03-24) =
+= Make the structure your own =
 
-1. Fixed a few PHP warnings
-2. Removed the %permalink% template as it broke uploads to drafts.
+* Build paths from post slugs, IDs, dates, authors, the person uploading, file extensions and file types.
+* Use categories, tags or your own custom taxonomies as folder names.
+* Keep category hierarchies as subfolders, flatten them into a single folder name, or use just the top-level or most specific categories.
+* Check example paths for your posts on the settings page before uploading files.
+* Upload through the block editor or Media Library as usual.
+* Add your own placeholders with a little PHP, if you need something specific to your site.
 
-= Changelog v. 3.4.3.2 (2019-03-24) =
+Start under **Settings → Custom Upload Dir**. Choose a template, save it, and use the preview to check where your next uploads will go. One template applies across your site.
 
-1. Added support for the Gutenberg editor.
+**Existing files stay put.** The template applies to new uploads; changing it does not move old files or change their URLs. Uploads made directly to the Media Library have no post, so post-specific parts of the template are left out. This organizes the actual files on your server; it does not add virtual folders to the Media Library screen.
 
-= Changelog v. 3.4.2 (2015-03-16) =
-
-1. Added [filter 'cud_generate_path'](https://wordpress.org/plugins/custom-upload-dir/installation/) so you can easily adjust the path with any variable you want.
-2. Added %mime_type% to sort files by mime type
-3. Added %author_role% to sort files by author role.
-4. Coming: support for per-post-type settings. Eg: every post type can have their own rules for where to place uploads. Currently missing the admin interface. If you feel like helping out, let me know.
-
-= Changelog v. 3.4 (2013-02-09) =
-
-1. Added %file_ext% to sort by file type
-2. Added [tentative support for uploads from WordPress apps](http://wordpress.org/support/topic/search-and-mobile-apps-compatibility?replies=6#post-3837193).
-3. Removed setting for "Base upload folder" as WP core no longer exposes this
-4. Cleared out some PHP error on the admin page
-5. Fixed leaking CSS on admin page
-
-= Changelog v. 3.3 (2011-12-18) =
-
-1. Support for WordPress 3.3
-2. Support for tags and categories
-3. Support for custom taxonomies
-4. Added %current_user%, %permalink%
-5. Added all permalink tags
-6. Added test-function to admin page
-
-[Older changelogs moved here.](http://wordpress.org/extend/plugins/custom-upload-dir/changelog/)
+Created by [Ulf Benjaminsson](https://www.ulfbenjaminsson.com).
 
 == Changelog ==
+
+= 3.5.0 (2026-10-12) =
+
+**Features and improvements**
+
+* A clearer settings page with clickable, keyboard-accessible placeholders and simpler explanations.
+* Better path previews, including uploads without a post and feedback when a preview post cannot be found.
+* Developers can now add custom placeholders using `cud_path_tokens`, fixing the old approach that removed them before they could be replaced. The FAQ includes working examples (thanks [jeffpannone](https://wordpress.org/support/topic/generate-tags-via-cud_generate_path/) and [tomeagles](https://wordpress.org/support/topic/custom-taxonomy-20/)!).
+
+**Bug fixes**
+
+* Fixed cases where block-editor uploads used the wrong post's details or lost the post information needed for the folder name.
+* Fixed failed uploads affecting the folder chosen for a later upload.
+* Fixed folder calculations that could accidentally remove part of the site's upload base path.
+* Fixed settings saves that could discard values. Invalid templates now show an error and keep the previous settings.
+* Fixed the documented `%mime_type%` placeholder and restored support for older placeholder names.
+* Fixed PHP notices when saved settings are missing taxonomy options (thanks [aljuk](https://wordpress.org/support/topic/plugin-custom-upload-dir-wp-errors/)!).
+* Improved handling of missing authors and deleted categories.
+
+**Maintenance**
+
+* Cleaned up older PHP code and made settings-page output safer.
+* Updated the French translation and added German and Swedish translations for the settings page and messages.
+* Reworked the help and examples to make choosing a folder structure easier.
+* Minimum requirements are now WordPress 5.7 and PHP 7.4.
+
+**When upgrading:** your saved template and existing files are kept. Dated folders now come only from your template: include `/%year%/%monthnum%/` if you want them. Saving plugin settings no longer changes WordPress's separate Media settings.
+
+= 3.4.6 (2020-07-17) =
+
+* Fixed a null dereference error.
 
 = Changelog v. 3.4.5 (2020-05-05) =
 
@@ -162,6 +178,9 @@ More problems have crept up due to the [massive amount of dry runs of 'upload_di
 
 == Upgrade Notice ==
 
+= 3.5.0 =
+A clearer settings page, better previews and fixes for choosing the right upload folder. Your existing files stay put. Include `/%year%/%monthnum%/` in your template if you want dated folders.
+
 = 3.4.4 =
 Fixed a few PHP warnings, and removed %permalink% template as it broke drafts.
 
@@ -200,34 +219,70 @@ Lots of new features and more flexible interface.
 
 == Frequently Asked Questions ==
 
-= How do I change base upload folder? =
-Since WP 3.5, by a setting in wp-config.php:
+= Will this add folders to the Media Library? =
 
-`define('UPLOADS', WP_CONTENT_DIR.'/your-folder');`
+Custom Upload Dir organizes the actual files on your web server. The WordPress Media Library looks and works as usual. The folder structure is useful when you browse your files through FTP, your hosting file manager or a backup.
 
-Just be aware that this will likely break all paths to your previously uploaded stuff.
+= Can it reorganize my existing uploads? =
 
-= How can I define my own tags? =
-Use the `cud_generate_path`-filter, like so:
+No. It chooses the destination for new uploads. Changing the template, renaming a post or changing its categories leaves previously uploaded files and their URLs alone.
 
-`function my_generate_path($template, $post_id){
-	$my_tags = array('%tag1%','%tag2%');
-	$replace = array($data, getData());
-	$customdir = str_replace($tags,	$replace, $template);
-	return $customdir;
-}
-add_filter('cud_generate_path', 'my_generate_path');`
+= Which folders do date and post tokens use? =
+
+For an attached upload, date tokens use the parent post's stored local date, including pages, backdated posts and scheduled posts. A draft without a usable date uses the current site-local time. `%postname%` uses the slug, then a sanitized title, then the post ID for an unnamed draft.
+
+Uploads without a parent use the current site-local time and omit post-specific tokens. Name and save a post before uploading when you want its slug in the folder path. Changing a slug later does not move earlier uploads.
+
+= How do I choose year/month folders? =
+
+Include `/%year%/%monthnum%/` in your template. An empty template stores new uploads directly in the upload base. Saving plugin settings does not change WordPress's Media settings or automatically prepend date tokens. Existing saved templates keep their date tokens.
+
+= Which tokens and aliases are supported? =
+
+The settings page lists the current tokens. Any registered taxonomy name can be used as `%taxonomy%`. Unknown tokens are omitted after custom token resolution. `%file_type%` is the filename-derived MIME type, for example `image/jpeg` (two directory levels); `%file_ext%` is the extension. These values do not replace WordPress's file validation.
+
+Legacy aliases remain available: `%mime_type%` → `%file_type%`, `%post_parent%` → `%parent_name%`, `%month%` → `%monthnum%`, `%ID%` → `%post_id%`, `%post_name%` → `%postname%`, and `%post_author%` → `%author%`. The removed `%permalink%` token is not supported. The older `%post_category%` and `%post_categories%` tokens are retained; prefer `%category%` for hierarchy settings.
+
+= How can I define my own tokens? =
+
+Use `cud_path_tokens` to supply a map of tokens to scalar values, before unresolved tokens are removed. This example adds `%site_section%`:
+
+    function my_cud_tokens( $tokens, $post_id, $file ) {
+        $tokens['%site_section%'] = $post_id ? 'posts' : 'library';
+        return $tokens;
+    }
+    add_filter( 'cud_path_tokens', 'my_cud_tokens', 10, 3 );
+
+Built-in post/file tokens take precedence, then custom tokens, then taxonomy and unknown tokens. Replacement values are literal data and are not recursively expanded. The existing `cud_generate_path` filter still receives the expanded path and parent ID. Use it to change the final path, not to resolve custom tokens:
+
+    function my_cud_final_path( $path, $post_id ) {
+        return '/archive' . $path;
+    }
+    add_filter( 'cud_generate_path', 'my_cud_final_path', 10, 2 );
+
+For unattached uploads, the parent argument to these two filters is an empty string, preserving the original final-path contract. Paths are relative to the upload base, even when written with a leading slash. Drive/URL prefixes, control characters and ` . ` or ` .. ` directory segments are rejected after filters run. Invalid settings retain the previous saved settings.
+
+= What about programmatic imports? =
+
+Native uploads and REST media creation carry their request context automatically. A programmatic call to `media_handle_sideload()` does not expose its parent argument to upload filters. Importers can use the `cud_upload_post_id` filter to supply that ID for the duration of their upload, then remove their callback in a `finally` block. Without that context, the upload uses the unattached template behavior. Other upload systems or custom REST endpoints may need their own adapter.
+
+= How do I change the base upload folder? =
+
+The template creates folders beneath WordPress's existing upload base. To change that base on a single-site installation, WordPress supports an `UPLOADS` constant in wp-config.php, relative to the WordPress installation directory:
+
+    define( 'UPLOADS', 'wp-content/your-folder' );
+
+Changing the base on an existing site requires a separate migration of files and URLs. This plugin does not perform that migration. Removing the plugin leaves uploaded files in place.
 
 
 == Screenshots ==
 
-1. The configuration screen.
-2. Shows how the upload path corresponds to the post's timestamp.
+1. Choose an upload path using placeholders for the user, date and post name, and configure how category hierarchies become folders.
 
 
 == Additional Info ==
 
-Copyright (C) 2007-2019 [Ulf Benjaminsson](https://www.ulfbenjaminsson.com)
+Copyright (C) 2007-2026 [Ulf Benjaminsson](https://www.ulfbenjaminsson.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

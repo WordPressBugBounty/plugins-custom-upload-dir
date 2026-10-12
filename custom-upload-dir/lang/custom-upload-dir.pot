@@ -1,0 +1,193 @@
+# Custom Upload Dir translation template.
+# Distributed under the same license as the plugin (GPL-2.0-or-later).
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Upload Dir 3.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-upload-dir/\n"
+"POT-Creation-Date: 2026-10-12 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: custom-upload-dir\n"
+
+#: custom_upload_dir.php:47
+msgid "Custom Upload Dir Settings"
+msgstr ""
+
+#: custom_upload_dir.php:78
+msgid "Settings"
+msgstr ""
+
+#: custom_upload_dir.php:382
+msgid "Custom Upload Dir: use a relative directory without a drive, URL, control characters, or . and .. segments."
+msgstr ""
+
+#: custom_upload_dir.php:795
+msgid "Settings were not saved: expected a settings array."
+msgstr ""
+
+#: custom_upload_dir.php:801
+msgid "Settings were not saved: use a path inside the upload folder, without a drive, URL, control characters, or . and .. segments."
+msgstr ""
+
+#: custom_upload_dir.php:808
+msgid "Settings were not saved: a checkbox value was invalid."
+msgstr ""
+
+#: custom_upload_dir.php:823
+msgid "You do not have permission to manage these settings."
+msgstr ""
+
+#: custom_upload_dir.php:827
+msgid "The file MIME type (for example image/jpeg)"
+msgstr ""
+
+#: custom_upload_dir.php:828
+msgid "The file extension"
+msgstr ""
+
+#: custom_upload_dir.php:829
+msgid "The post ID"
+msgstr ""
+
+#: custom_upload_dir.php:830
+msgid "The post author"
+msgstr ""
+
+#: custom_upload_dir.php:831
+msgid "The post author's role"
+msgstr ""
+
+#: custom_upload_dir.php:832
+msgid "The post's URL slug"
+msgstr ""
+
+#: custom_upload_dir.php:833
+msgid "The parent URL slug"
+msgstr ""
+
+#: custom_upload_dir.php:834
+msgid "The post type"
+msgstr ""
+
+#: custom_upload_dir.php:835
+msgid "The post's year (YYYY)"
+msgstr ""
+
+#: custom_upload_dir.php:836
+msgid "The post's month (MM)"
+msgstr ""
+
+#: custom_upload_dir.php:837
+msgid "The post's day (DD)"
+msgstr ""
+
+#: custom_upload_dir.php:838
+msgid "The hour (HH)"
+msgstr ""
+
+#: custom_upload_dir.php:839
+msgid "The minute (MM)"
+msgstr ""
+
+#: custom_upload_dir.php:840
+msgid "The second (SS)"
+msgstr ""
+
+#: custom_upload_dir.php:841
+msgid "The currently logged in user"
+msgstr ""
+
+#: custom_upload_dir.php:842
+msgid "The post's categories (see: Taxonomies)"
+msgstr ""
+
+#: custom_upload_dir.php:843
+msgid "The post's tags (see: Taxonomies)"
+msgstr ""
+
+#: custom_upload_dir.php:846
+msgid "Always get all parents"
+msgstr ""
+
+#: custom_upload_dir.php:847
+msgid "Flat filesystem (no subfolders for children)"
+msgstr ""
+
+#: custom_upload_dir.php:848
+msgid "Ignore parents (use only leaf nodes)"
+msgstr ""
+
+#: custom_upload_dir.php:849
+msgid "Ignore children (use only the root of hierarchy)"
+msgstr ""
+
+#: custom_upload_dir.php:854
+msgid "Choose where new uploads are stored. Existing files and their URLs are not moved or renamed."
+msgstr ""
+
+#: custom_upload_dir.php:859
+msgid "Build a path template:"
+msgstr ""
+
+#: custom_upload_dir.php:862
+msgid "Separate folders with /. This template applies to all post types. An empty template uses the upload base folder."
+msgstr ""
+
+#: custom_upload_dir.php:863
+msgid "Include /%year%/%monthnum%/ if you want dated folders. Saving here does not change the WordPress Media settings or automatically add date folders."
+msgstr ""
+
+#: custom_upload_dir.php:869
+msgid "Custom taxonomy names also work as %taxonomy% tokens. Dates use the post date; uploads without a post use current site-local time and omit post-specific tokens."
+msgstr ""
+
+#: custom_upload_dir.php:873
+msgid "Settings for taxonomy hierarchies:"
+msgstr ""
+
+#: custom_upload_dir.php:879
+msgid "For example: /animals/cats, /animals-cats when flattened, /cats for leaves only, or /animals for roots only. Same-level terms are sorted alphabetically. Leaves-only takes precedence over the parent and root options."
+msgstr ""
+
+#: custom_upload_dir.php:883
+msgid "Preview post IDs"
+msgstr ""
+
+#: custom_upload_dir.php:884
+msgid "Enter comma-separated post IDs, then save to refresh the preview. Previews use the saved template and a sample file named example.jpg; no folders are created."
+msgstr ""
+
+#: custom_upload_dir.php:889
+msgid "Saved template preview"
+msgstr ""
+
+#: custom_upload_dir.php:890
+msgid "Try to always name and save your post before uploading attachments."
+msgstr ""
+
+#: custom_upload_dir.php:892
+msgid "Post"
+msgstr ""
+
+#: custom_upload_dir.php:892
+msgid "Upload directory"
+msgstr ""
+
+#: custom_upload_dir.php:904
+msgid "Unattached upload"
+msgstr ""
+
+#. %d: A post ID entered for preview.
+#: custom_upload_dir.php:909
+#, php-format
+msgid "Post #%d was not found; showing an unattached upload."
+msgstr ""
+
+#: custom_upload_dir.php
+msgid "Custom Upload Dir"
+msgstr ""
+
+#: custom_upload_dir.php
+msgid "Keeps your uploaded files organized in smart folder structures."
+msgstr ""

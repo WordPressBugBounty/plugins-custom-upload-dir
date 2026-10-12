@@ -1,0 +1,200 @@
+# Custom Upload Dir — fr_FR.
+# Distributed under the same license as the plugin (GPL-2.0-or-later).
+# Translations updated with AI assistance in October 2026.
+# Original French translation: A Le Bon (bibi699depreau), 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Upload Dir 3.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-upload-dir/\n"
+"POT-Creation-Date: 2026-10-12 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: custom-upload-dir\n"
+"PO-Revision-Date: 2026-10-12 12:00+0000\n"
+"Last-Translator: AI-assisted translation\n"
+"Language-Team: Français\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: custom_upload_dir.php:47
+msgid "Custom Upload Dir Settings"
+msgstr "Paramètres de Custom Upload Dir"
+
+#: custom_upload_dir.php:78
+msgid "Settings"
+msgstr "Paramètres"
+
+#: custom_upload_dir.php:382
+msgid "Custom Upload Dir: use a relative directory without a drive, URL, control characters, or . and .. segments."
+msgstr "Custom Upload Dir : utilisez un chemin relatif sans lecteur, URL, caractères de contrôle ni segments « . » ou « .. »."
+
+#: custom_upload_dir.php:795
+msgid "Settings were not saved: expected a settings array."
+msgstr "Les paramètres n’ont pas été enregistrés : le format des données est incorrect."
+
+#: custom_upload_dir.php:801
+msgid "Settings were not saved: use a path inside the upload folder, without a drive, URL, control characters, or . and .. segments."
+msgstr "Les paramètres n’ont pas été enregistrés : utilisez un chemin à l’intérieur du dossier de téléversement, sans lecteur, URL, caractères de contrôle ni segments « . » ou « .. »."
+
+#: custom_upload_dir.php:808
+msgid "Settings were not saved: a checkbox value was invalid."
+msgstr "Les paramètres n’ont pas été enregistrés : la valeur d’une case à cocher est incorrecte."
+
+#: custom_upload_dir.php:823
+msgid "You do not have permission to manage these settings."
+msgstr "Vous n’avez pas l’autorisation de modifier ces paramètres."
+
+#: custom_upload_dir.php:827
+msgid "The file MIME type (for example image/jpeg)"
+msgstr "Le type MIME du fichier (par exemple image/jpeg)"
+
+#: custom_upload_dir.php:828
+msgid "The file extension"
+msgstr "L’extension du fichier"
+
+#: custom_upload_dir.php:829
+msgid "The post ID"
+msgstr "L’ID de la publication"
+
+#: custom_upload_dir.php:830
+msgid "The post author"
+msgstr "L’auteur de la publication"
+
+#: custom_upload_dir.php:831
+msgid "The post author's role"
+msgstr "Le rôle de l’auteur de la publication"
+
+#: custom_upload_dir.php:832
+msgid "The post's URL slug"
+msgstr "Le slug de la publication (son nom dans l’URL)"
+
+#: custom_upload_dir.php:833
+msgid "The parent URL slug"
+msgstr "Le slug du parent (son nom dans l’URL)"
+
+#: custom_upload_dir.php:834
+msgid "The post type"
+msgstr "Le type de publication"
+
+#: custom_upload_dir.php:835
+msgid "The post's year (YYYY)"
+msgstr "L’année de la publication (AAAA)"
+
+#: custom_upload_dir.php:836
+msgid "The post's month (MM)"
+msgstr "Le mois de la publication (MM)"
+
+#: custom_upload_dir.php:837
+msgid "The post's day (DD)"
+msgstr "Le jour de la publication (JJ)"
+
+#: custom_upload_dir.php:838
+msgid "The hour (HH)"
+msgstr "L’heure (HH)"
+
+#: custom_upload_dir.php:839
+msgid "The minute (MM)"
+msgstr "La minute (MM)"
+
+#: custom_upload_dir.php:840
+msgid "The second (SS)"
+msgstr "La seconde (SS)"
+
+#: custom_upload_dir.php:841
+msgid "The currently logged in user"
+msgstr "L’utilisateur actuellement connecté"
+
+#: custom_upload_dir.php:842
+msgid "The post's categories (see: Taxonomies)"
+msgstr "Les catégories de la publication (voir les paramètres des taxonomies)"
+
+#: custom_upload_dir.php:843
+msgid "The post's tags (see: Taxonomies)"
+msgstr "Les étiquettes de la publication (voir les paramètres des taxonomies)"
+
+#: custom_upload_dir.php:846
+msgid "Always get all parents"
+msgstr "Toujours inclure tous les niveaux parents"
+
+#: custom_upload_dir.php:847
+msgid "Flat filesystem (no subfolders for children)"
+msgstr "Arborescence à un seul niveau (sans sous-dossiers pour les enfants)"
+
+#: custom_upload_dir.php:848
+msgid "Ignore parents (use only leaf nodes)"
+msgstr "Ignorer les parents (utiliser uniquement les termes sans enfants)"
+
+#: custom_upload_dir.php:849
+msgid "Ignore children (use only the root of hierarchy)"
+msgstr "Ignorer les enfants (utiliser uniquement la racine de la hiérarchie)"
+
+#: custom_upload_dir.php:854
+msgid "Choose where new uploads are stored. Existing files and their URLs are not moved or renamed."
+msgstr "Choisissez où enregistrer les nouveaux fichiers téléversés. Les fichiers existants ne sont ni déplacés ni renommés, et leurs URL restent inchangées."
+
+#: custom_upload_dir.php:859
+msgid "Build a path template:"
+msgstr "Créez un modèle de chemin :"
+
+#: custom_upload_dir.php:862
+msgid "Separate folders with /. This template applies to all post types. An empty template uses the upload base folder."
+msgstr "Séparez les dossiers par /. Ce modèle s’applique à tous les types de publication. Un modèle vide utilise le dossier de base des téléversements."
+
+#: custom_upload_dir.php:863
+msgid "Include /%year%/%monthnum%/ if you want dated folders. Saving here does not change the WordPress Media settings or automatically add date folders."
+msgstr "Ajoutez /%year%/%monthnum%/ pour obtenir des dossiers par date. L’enregistrement de ces paramètres ne modifie pas les réglages des médias de WordPress et n’ajoute pas automatiquement de dossiers par date."
+
+#: custom_upload_dir.php:869
+msgid "Custom taxonomy names also work as %taxonomy% tokens. Dates use the post date; uploads without a post use current site-local time and omit post-specific tokens."
+msgstr "Les noms des taxonomies personnalisées peuvent aussi servir de variables %taxonomy%. Les dates correspondent à celle de la publication. Sans publication associée, le téléversement utilise la date et l’heure actuelles du site et ignore les variables propres à une publication."
+
+#: custom_upload_dir.php:873
+msgid "Settings for taxonomy hierarchies:"
+msgstr "Paramètres des hiérarchies de taxonomies :"
+
+#: custom_upload_dir.php:879
+msgid "For example: /animals/cats, /animals-cats when flattened, /cats for leaves only, or /animals for roots only. Same-level terms are sorted alphabetically. Leaves-only takes precedence over the parent and root options."
+msgstr "Par exemple : /animals/cats, /animals-cats sur un seul niveau, /cats pour les termes sans enfants uniquement, ou /animals pour les racines uniquement. Les termes de même niveau sont triés par ordre alphabétique. L’option « Ignorer les parents » est prioritaire sur les options concernant les parents et les racines."
+
+#: custom_upload_dir.php:883
+msgid "Preview post IDs"
+msgstr "ID des publications à prévisualiser"
+
+#: custom_upload_dir.php:884
+msgid "Enter comma-separated post IDs, then save to refresh the preview. Previews use the saved template and a sample file named example.jpg; no folders are created."
+msgstr "Saisissez les ID des publications séparés par des virgules, puis enregistrez pour actualiser l’aperçu. L’aperçu utilise le modèle enregistré et un fichier fictif nommé example.jpg ; aucun dossier n’est créé."
+
+#: custom_upload_dir.php:889
+msgid "Saved template preview"
+msgstr "Aperçu du modèle enregistré"
+
+#: custom_upload_dir.php:890
+msgid "Try to always name and save your post before uploading attachments."
+msgstr "Pensez à donner un titre à votre publication et à l’enregistrer avant d’y téléverser des fichiers."
+
+#: custom_upload_dir.php:892
+msgid "Post"
+msgstr "Publication"
+
+#: custom_upload_dir.php:892
+msgid "Upload directory"
+msgstr "Dossier de téléversement"
+
+#: custom_upload_dir.php:904
+msgid "Unattached upload"
+msgstr "Téléversement sans publication associée"
+
+#. %d: A post ID entered for preview.
+#: custom_upload_dir.php:909
+#, php-format
+msgid "Post #%d was not found; showing an unattached upload."
+msgstr "La publication n° %d est introuvable ; l’aperçu montre un téléversement sans publication associée."
+
+#: custom_upload_dir.php
+msgid "Custom Upload Dir"
+msgstr "Custom Upload Dir"
+
+#: custom_upload_dir.php
+msgid "Keeps your uploaded files organized in smart folder structures."
+msgstr "Organisez vos fichiers téléversés dans une arborescence de dossiers adaptée à vos besoins."
