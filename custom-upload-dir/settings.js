@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		return;
 	}
 	var template = settings.querySelector('#template');
+	settings.addEventListener('focusin', function (event) {
+		if (event.target.matches('.cud-template')) {
+			template = event.target;
+		}
+	});
 	settings.querySelectorAll('.cud-token').forEach(function (button) {
 		button.addEventListener('click', function () {
 			var separator = template.value && !template.value.endsWith('/') ? '/' : '';

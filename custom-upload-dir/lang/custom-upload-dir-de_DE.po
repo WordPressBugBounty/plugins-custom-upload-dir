@@ -1,16 +1,13 @@
-# Custom Upload Dir — de_DE.
-# Distributed under the same license as the plugin (GPL-2.0-or-later).
-# Translations updated with AI assistance in October 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: Custom Upload Dir 3.5.0\n"
+"Project-Id-Version: Custom Upload Dir 3.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-upload-dir/\n"
-"POT-Creation-Date: 2026-10-12 12:00+0000\n"
+"POT-Creation-Date: 2026-10-13 12:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: custom-upload-dir\n"
-"PO-Revision-Date: 2026-10-12 12:00+0000\n"
+"PO-Revision-Date: 2026-10-13 12:00+0000\n"
 "Last-Translator: AI-assisted translation\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -24,171 +21,238 @@ msgstr "Einstellungen für Custom Upload Dir"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: custom_upload_dir.php:382
+#: custom_upload_dir.php:462
 msgid "Custom Upload Dir: use a relative directory without a drive, URL, control characters, or . and .. segments."
 msgstr "Custom Upload Dir: Verwende einen relativen Verzeichnispfad ohne Laufwerksangabe, URL, Steuerzeichen oder die Pfadsegmente „.“ und „..“."
 
-#: custom_upload_dir.php:795
+#: custom_upload_dir.php:884
 msgid "Settings were not saved: expected a settings array."
 msgstr "Die Einstellungen wurden nicht gespeichert: Die Daten haben nicht das erwartete Format."
 
-#: custom_upload_dir.php:801
+#: custom_upload_dir.php:890
 msgid "Settings were not saved: use a path inside the upload folder, without a drive, URL, control characters, or . and .. segments."
 msgstr "Die Einstellungen wurden nicht gespeichert: Verwende einen Pfad innerhalb des Upload-Ordners, ohne Laufwerksangabe, URL, Steuerzeichen oder die Pfadsegmente „.“ und „..“."
 
-#: custom_upload_dir.php:808
+#: custom_upload_dir.php:897 custom_upload_dir.php:903
+#: custom_upload_dir.php:911
+msgid "Settings were not saved: an upload rule was invalid."
+msgstr "Die Einstellungen wurden nicht gespeichert: Eine Upload-Regel war ungültig."
+
+#: custom_upload_dir.php:917
 msgid "Settings were not saved: a checkbox value was invalid."
 msgstr "Die Einstellungen wurden nicht gespeichert: Der Wert eines Kontrollkästchens war ungültig."
 
-#: custom_upload_dir.php:823
+#: custom_upload_dir.php:941 custom_upload_dir.php:1075
+msgid "Routing"
+msgstr "Zielauswahl"
+
+#: custom_upload_dir.php:947 custom_upload_dir.php:961
+msgid "Custom template"
+msgstr "Eigene Vorlage"
+
+#: custom_upload_dir.php:960
+msgid "Use default"
+msgstr "Standard verwenden"
+
+#: custom_upload_dir.php:962
+msgid "Leave to WordPress"
+msgstr "WordPress überlassen"
+
+#: custom_upload_dir.php:969
 msgid "You do not have permission to manage these settings."
 msgstr "Du bist nicht berechtigt, diese Einstellungen zu verwalten."
 
-#: custom_upload_dir.php:827
+#: custom_upload_dir.php:973
 msgid "The file MIME type (for example image/jpeg)"
 msgstr "Der MIME-Typ der Datei (zum Beispiel image/jpeg)"
 
-#: custom_upload_dir.php:828
+#: custom_upload_dir.php:974
 msgid "The file extension"
 msgstr "Die Dateiendung"
 
-#: custom_upload_dir.php:829
+#: custom_upload_dir.php:975
 msgid "The post ID"
 msgstr "Die Beitrags-ID"
 
-#: custom_upload_dir.php:830
+#: custom_upload_dir.php:976
 msgid "The post author"
 msgstr "Der Autor des Beitrags"
 
-#: custom_upload_dir.php:831
+#: custom_upload_dir.php:977
+msgid "The post author's numeric ID"
+msgstr "Die numerische ID des Beitragsautors"
+
+#: custom_upload_dir.php:978
 msgid "The post author's role"
 msgstr "Die Rolle des Beitragsautors"
 
-#: custom_upload_dir.php:832
+#: custom_upload_dir.php:979
 msgid "The post's URL slug"
 msgstr "Die Titelform des Beitrags (sein Name in der URL)"
 
-#: custom_upload_dir.php:833
+#: custom_upload_dir.php:980
 msgid "The parent URL slug"
 msgstr "Die Titelform des übergeordneten Inhalts"
 
-#: custom_upload_dir.php:834
+#: custom_upload_dir.php:981
 msgid "The post type"
 msgstr "Der Inhaltstyp"
 
-#: custom_upload_dir.php:835
+#: custom_upload_dir.php:982
 msgid "The post's year (YYYY)"
 msgstr "Das Jahr des Beitrags (JJJJ)"
 
-#: custom_upload_dir.php:836
+#: custom_upload_dir.php:983
 msgid "The post's month (MM)"
 msgstr "Der Monat des Beitrags (MM)"
 
-#: custom_upload_dir.php:837
+#: custom_upload_dir.php:984
 msgid "The post's day (DD)"
 msgstr "Der Tag des Beitrags (TT)"
 
-#: custom_upload_dir.php:838
+#: custom_upload_dir.php:985
+msgid "The upload year in the site timezone (YYYY)"
+msgstr "Das Upload-Jahr in der Zeitzone der Website (JJJJ)"
+
+#: custom_upload_dir.php:986
+msgid "The upload month in the site timezone (MM)"
+msgstr "Der Upload-Monat in der Zeitzone der Website (MM)"
+
+#: custom_upload_dir.php:987
+msgid "The upload day in the site timezone (DD)"
+msgstr "Der Upload-Tag in der Zeitzone der Website (TT)"
+
+#: custom_upload_dir.php:988
 msgid "The hour (HH)"
 msgstr "Die Stunde (HH)"
 
-#: custom_upload_dir.php:839
+#: custom_upload_dir.php:989
 msgid "The minute (MM)"
 msgstr "Die Minute (MM)"
 
-#: custom_upload_dir.php:840
+#: custom_upload_dir.php:990
 msgid "The second (SS)"
 msgstr "Die Sekunde (SS)"
 
-#: custom_upload_dir.php:841
+#: custom_upload_dir.php:991
 msgid "The currently logged in user"
 msgstr "Der aktuell angemeldete Benutzer"
 
-#: custom_upload_dir.php:842
+#: custom_upload_dir.php:992
+msgid "The uploader's numeric ID"
+msgstr "Die numerische ID der hochladenden Person"
+
+#: custom_upload_dir.php:993
 msgid "The post's categories (see: Taxonomies)"
 msgstr "Die Kategorien des Beitrags (siehe Taxonomie-Einstellungen)"
 
-#: custom_upload_dir.php:843
+#: custom_upload_dir.php:994
 msgid "The post's tags (see: Taxonomies)"
 msgstr "Die Schlagwörter des Beitrags (siehe Taxonomie-Einstellungen)"
 
-#: custom_upload_dir.php:846
+#: custom_upload_dir.php:997
 msgid "Always get all parents"
 msgstr "Immer alle übergeordneten Ebenen einbeziehen"
 
-#: custom_upload_dir.php:847
+#: custom_upload_dir.php:998
 msgid "Flat filesystem (no subfolders for children)"
 msgstr "Flache Ordnerstruktur (keine Unterordner für untergeordnete Begriffe)"
 
-#: custom_upload_dir.php:848
+#: custom_upload_dir.php:999
 msgid "Ignore parents (use only leaf nodes)"
 msgstr "Übergeordnete Ebenen ignorieren (nur Begriffe ohne Unterbegriffe verwenden)"
 
-#: custom_upload_dir.php:849
+#: custom_upload_dir.php:1000
 msgid "Ignore children (use only the root of hierarchy)"
 msgstr "Untergeordnete Ebenen ignorieren (nur die oberste Ebene verwenden)"
 
-#: custom_upload_dir.php:854
+#: custom_upload_dir.php:1005
 msgid "Choose where new uploads are stored. Existing files and their URLs are not moved or renamed."
 msgstr "Wähle, wo neue Uploads gespeichert werden. Vorhandene Dateien werden weder verschoben noch umbenannt; ihre URLs bleiben unverändert."
 
-#: custom_upload_dir.php:859
+#: custom_upload_dir.php:1010
 msgid "Build a path template:"
 msgstr "Pfadvorlage erstellen:"
 
-#: custom_upload_dir.php:862
-msgid "Separate folders with /. This template applies to all post types. An empty template uses the upload base folder."
-msgstr "Trenne Ordner mit /. Diese Vorlage gilt für alle Inhaltstypen. Bei einer leeren Vorlage wird der Basisordner für Uploads verwendet."
+#: custom_upload_dir.php:1013
+msgid "Separate folders with /. This is the default template. An empty template uses the upload base folder. Token buttons add to the last template field you focused."
+msgstr "Trenne Ordner mit /. Dies ist die Standardvorlage. Eine leere Vorlage verwendet den Upload-Basisordner. Die Platzhalter-Schaltflächen fügen ihren Inhalt in das zuletzt ausgewählte Vorlagenfeld ein."
 
-#: custom_upload_dir.php:863
+#: custom_upload_dir.php:1014
 msgid "Include /%year%/%monthnum%/ if you want dated folders. Saving here does not change the WordPress Media settings or automatically add date folders."
 msgstr "Füge /%year%/%monthnum%/ ein, wenn du Datumsordner möchtest. Das Speichern hier ändert weder die Medien-Einstellungen von WordPress noch werden automatisch Datumsordner hinzugefügt."
 
-#: custom_upload_dir.php:869
-msgid "Custom taxonomy names also work as %taxonomy% tokens. Dates use the post date; uploads without a post use current site-local time and omit post-specific tokens."
-msgstr "Namen eigener Taxonomien funktionieren ebenfalls als %taxonomy%-Platzhalter. Für Datumsangaben wird das Beitragsdatum verwendet. Uploads ohne zugeordneten Beitrag verwenden die aktuelle Zeit in der Zeitzone der Website und lassen beitragsbezogene Platzhalter weg."
+#: custom_upload_dir.php:1020
+msgid "Custom taxonomy names also work as %taxonomy% tokens. Existing date tokens use the post date, falling back to current site-local time without a dated post. The upload_year, upload_month and upload_day tokens always use the upload date in the site timezone."
+msgstr "Eigene Taxonomienamen funktionieren auch als %taxonomy%-Platzhalter. Die bisherigen Datumsplatzhalter verwenden das Beitragsdatum, ohne datierten Beitrag die aktuelle Ortszeit der Website. Die Platzhalter upload_year, upload_month und upload_day verwenden immer das Upload-Datum in der Zeitzone der Website."
 
-#: custom_upload_dir.php:873
-msgid "Settings for taxonomy hierarchies:"
-msgstr "Einstellungen für Taxonomie-Hierarchien:"
+#: custom_upload_dir.php:1024
+msgid "Templates by parent post type"
+msgstr "Vorlagen nach übergeordnetem Inhaltstyp"
 
-#: custom_upload_dir.php:879
-msgid "For example: /animals/cats, /animals-cats when flattened, /cats for leaves only, or /animals for roots only. Same-level terms are sorted alphabetically. Leaves-only takes precedence over the parent and root options."
-msgstr "Zum Beispiel: /animals/cats, /animals-cats bei flacher Struktur, /cats nur für Begriffe ohne Unterbegriffe oder /animals nur für die oberste Ebene. Begriffe derselben Ebene werden alphabetisch sortiert. Die Option „Übergeordnete Ebenen ignorieren“ hat Vorrang vor den Optionen für übergeordnete und oberste Ebenen."
+#: custom_upload_dir.php:1026
+msgid "Use default keeps the template above. Custom template uses the field below, including an empty field for the upload base. Leave to WordPress keeps WordPress and other plugins in control of the directory. Rules for temporarily unavailable post types are retained."
+msgstr "Standard verwenden nutzt die Vorlage oben. Eigene Vorlage verwendet das Feld darunter; ein leeres Feld steht für den Upload-Basisordner. WordPress überlassen lässt WordPress und andere Plugins das Verzeichnis bestimmen. Regeln für vorübergehend nicht verfügbare Inhaltstypen bleiben erhalten."
 
-#: custom_upload_dir.php:883
-msgid "Preview post IDs"
-msgstr "Beitrags-IDs für die Vorschau"
+#: custom_upload_dir.php:1042
+msgid "Uploads without a parent"
+msgstr "Uploads ohne übergeordneten Inhalt"
 
-#: custom_upload_dir.php:884
-msgid "Enter comma-separated post IDs, then save to refresh the preview. Previews use the saved template and a sample file named example.jpg; no folders are created."
-msgstr "Gib Beitrags-IDs durch Kommas getrennt ein und speichere, um die Vorschau zu aktualisieren. Die Vorschau verwendet die gespeicherte Vorlage und eine Beispieldatei namens example.jpg. Es werden keine Ordner erstellt."
-
-#: custom_upload_dir.php:889
-msgid "Saved template preview"
-msgstr "Vorschau der gespeicherten Vorlage"
-
-#: custom_upload_dir.php:890
-msgid "Try to always name and save your post before uploading attachments."
-msgstr "Gib deinem Beitrag möglichst immer einen Titel und speichere ihn, bevor du Dateien dazu hochlädst."
-
-#: custom_upload_dir.php:892
-msgid "Post"
-msgstr "Beitrag"
-
-#: custom_upload_dir.php:892
-msgid "Upload directory"
-msgstr "Upload-Verzeichnis"
-
-#: custom_upload_dir.php:904
+#: custom_upload_dir.php:1044 custom_upload_dir.php:1089
 msgid "Unattached upload"
 msgstr "Upload ohne zugeordneten Beitrag"
 
+#: custom_upload_dir.php:1045
+msgid "Applies to Media Library uploads without a parent and uploads whose parent no longer exists. Use default preserves your existing behavior."
+msgstr "Gilt für Uploads in die Mediathek ohne übergeordneten Inhalt und für Uploads, deren übergeordneter Inhalt nicht mehr existiert. Standard verwenden behält das bisherige Verhalten bei."
+
+#: custom_upload_dir.php:1049
+msgid "Settings for taxonomy hierarchies:"
+msgstr "Einstellungen für Taxonomie-Hierarchien:"
+
+#: custom_upload_dir.php:1055
+msgid "For example: /animals/cats, /animals-cats when flattened, /cats for leaves only, or /animals for roots only. Same-level terms are sorted alphabetically. Leaves-only takes precedence over the parent and root options."
+msgstr "Zum Beispiel: /animals/cats, /animals-cats bei flacher Struktur, /cats nur für Begriffe ohne Unterbegriffe oder /animals nur für die oberste Ebene. Begriffe derselben Ebene werden alphabetisch sortiert. Die Option „Übergeordnete Ebenen ignorieren“ hat Vorrang vor den Optionen für übergeordnete und oberste Ebenen."
+
+#: custom_upload_dir.php:1059
+msgid "Preview post IDs"
+msgstr "Beitrags-IDs für die Vorschau"
+
+#: custom_upload_dir.php:1060
+msgid "Enter comma-separated post IDs, then save to refresh the preview. Previews use the saved template and a sample file named example.jpg; no folders are created."
+msgstr "Gib Beitrags-IDs durch Kommas getrennt ein und speichere, um die Vorschau zu aktualisieren. Die Vorschau verwendet die gespeicherte Vorlage und eine Beispieldatei namens example.jpg. Es werden keine Ordner erstellt."
+
+#: custom_upload_dir.php:1065
+msgid "Saved template preview"
+msgstr "Vorschau der gespeicherten Vorlage"
+
+#. %s: Example upload date and timezone.
+#: custom_upload_dir.php:1070
+#, php-format
+msgid "Example upload time: %s. The uploader is your currently logged-in user."
+msgstr "Beispielzeit des Uploads: %s. Als hochladende Person gilt der aktuell angemeldete Benutzer."
+
+#: custom_upload_dir.php:1073
+msgid "Try to always name and save your post before uploading attachments."
+msgstr "Gib deinem Beitrag möglichst immer einen Titel und speichere ihn, bevor du Dateien dazu hochlädst."
+
+#: custom_upload_dir.php:1075
+msgid "Post"
+msgstr "Beitrag"
+
+#: custom_upload_dir.php:1075
+msgid "Upload directory"
+msgstr "Upload-Verzeichnis"
+
 #. %d: A post ID entered for preview.
-#: custom_upload_dir.php:909
+#: custom_upload_dir.php:1094
 #, php-format
 msgid "Post #%d was not found; showing an unattached upload."
 msgstr "Beitrag #%d wurde nicht gefunden. Die Vorschau zeigt einen Upload ohne zugeordneten Beitrag."
+
+#: custom_upload_dir.php:1099
+msgid "Current WordPress directory example. The upload method, post date and other plugins may change it; Custom Upload Dir does not override it."
+msgstr "Beispiel für das aktuelle WordPress-Verzeichnis. Upload-Methode, Beitragsdatum und andere Plugins können es ändern; Custom Upload Dir überschreibt es nicht."
 
 #: custom_upload_dir.php
 msgid "Custom Upload Dir"

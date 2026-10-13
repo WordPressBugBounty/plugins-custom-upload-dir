@@ -4,7 +4,7 @@ Donate link: https://www.amazon.com/gp/registry/wishlist/2QB6SQ5XX2U0N/105-32091
 Tags: upload, organize, files, media
 Requires at least: 5.7
 Tested up to: 7.1.3
-Stable tag: 3.5.0
+Stable tag: 3.6.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -38,13 +38,50 @@ These paths sit inside your site's upload folder, usually `wp-content/uploads`. 
 * Upload through the block editor or Media Library as usual.
 * Add your own placeholders with a little PHP, if you need something specific to your site.
 
-Start under **Settings → Custom Upload Dir**. Choose a template, save it, and use the preview to check where your next uploads will go. One template applies across your site.
+Start under **Settings → Custom Upload Dir**. Choose a default template, save it, and use the preview to check example destinations.
+
+= Different folders for posts, pages and Media Library uploads =
+
+Under **Templates by parent post type**, you can choose a different destination for uploads to Posts, Pages or a custom post type. The "parent" is the post or page you are uploading to. Each type has three choices:
+
+* **Use default:** use the main template at the top of the settings page.
+* **Custom template:** use a different template for this type. Leave the template empty to store files directly in the upload folder, without subfolders.
+* **Leave to WordPress:** let WordPress choose the destination using its Media settings and any other upload plugins.
+
+For example, keep Posts on **Use default** with `/%year%/%monthnum%/`, and give Pages the custom template `/pages/%postname%/`. An image uploaded to your "About" page would go in `/pages/about/`, while post uploads would keep their dated folders.
+
+**Uploads without a parent** controls files uploaded directly through **Media Library → Add New**. It has the same three choices. For example, `/library/%current_user_id%/` keeps these files together in folders for each uploader. Attaching a file to a post later does not move it.
+
+All of these rules start on **Use default**, so upgrading does not change your destinations. Configure only the rules you want to use.
+
+= Folders by author or uploader ID =
+
+Use `%author_id%` for the post author's numeric ID and `%current_user_id%` for the person uploading. They can differ when an editor uploads to another author's post. For example, if user 12 uploads to a post by user 7, `/authors/%author_id%/uploads-by/%current_user_id%/` becomes `/authors/7/uploads-by/12/`.
+
+For Media Library uploads, use `%current_user_id%`: there is no parent post author, so `%author_id%` is left out. Uploads without a logged-in user leave out `%current_user_id%` too.
+
+= Choose the post date or the upload date =
+
+Use `/%year%/%monthnum%/%day%/` for the post's date, or `/%upload_year%/%upload_month%/%upload_day%/` for the date the file is uploaded. Upload dates follow the timezone in your WordPress settings.
+
+For example, an image uploaded on October 13, 2026 to a post dated March 5, 2019 goes in `/2019/03/05/` with the post-date template, or `/2026/10/13/` with the upload-date template. If there is no dated parent post, both templates use the upload date.
 
 **Existing files stay put.** The template applies to new uploads; changing it does not move old files or change their URLs. Uploads made directly to the Media Library have no post, so post-specific parts of the template are left out. This organizes the actual files on your server; it does not add virtual folders to the Media Library screen.
 
 Created by [Ulf Benjaminsson](https://www.ulfbenjaminsson.com).
 
 == Changelog ==
+
+= 3.6.0 (2026-10-13) =
+
+* Added separate upload templates for Posts, Pages and custom post types. Each can use the default template, its own template, or WordPress's normal folders (thanks [kristinachilds](https://wordpress.org/support/topic/multiple-folder-structures/) and [pedjas](https://wordpress.org/support/topic/separating-rules-by-post-type/) for requesting this!).
+* Added a separate template for uploads made directly through the Media Library (thanks [somtam](https://wordpress.org/support/topic/upload-from-the-media-panel-and-not-from-post/) for the feedback on Media Library uploads!).
+* Added `%author_id%` and `%current_user_id%` for folders named after the post author's or uploader's numeric ID (thanks [kryvulena](https://wordpress.org/support/topic/feature-request-user-id/) for the request and [aldemarcalazans](https://wordpress.org/support/topic/user_id-2/) for sharing an early solution!).
+* Added `%upload_year%`, `%upload_month%` and `%upload_day%` for folders based on the upload date in your site's timezone. Existing date tokens continue to use the post date (thanks [jslanglois](https://wordpress.org/support/topic/wrong-year-1/) and [aslynn](https://wordpress.org/support/topic/no-option-to-change-upload-folder-dates-are-random/) for highlighting the confusion between these dates!).
+* Added path previews and clickable placeholders for the new templates.
+* Updated French, German and Swedish translations and settings help.
+
+Upgrading alone preserves existing destinations. No media is moved.
 
 = 3.5.0 (2026-10-12) =
 
@@ -178,6 +215,9 @@ More problems have crept up due to the [massive amount of dry runs of 'upload_di
 
 == Upgrade Notice ==
 
+= 3.6.0 =
+Optional per-type and unattached templates, author/uploader IDs and explicit upload dates. Existing settings, upload destinations and files are preserved unless you configure a new rule.
+
 = 3.5.0 =
 A clearer settings page, better previews and fixes for choosing the right upload folder. Your existing files stay put. Include `/%year%/%monthnum%/` in your template if you want dated folders.
 
@@ -229,17 +269,19 @@ No. It chooses the destination for new uploads. Changing the template, renaming 
 
 = Which folders do date and post tokens use? =
 
-For an attached upload, date tokens use the parent post's stored local date, including pages, backdated posts and scheduled posts. A draft without a usable date uses the current site-local time. `%postname%` uses the slug, then a sanitized title, then the post ID for an unnamed draft.
+When uploading to a post or page, `%year%`, `%monthnum%` and `%day%` use its date, even for backdated or scheduled posts. A draft without a date uses the current date in your site's timezone. The `%upload_year%`, `%upload_month%` and `%upload_day%` tokens always use the upload date in that timezone. `%postname%` uses the slug; if there is none, it uses the title or, for an unnamed draft, the post ID.
 
 Uploads without a parent use the current site-local time and omit post-specific tokens. Name and save a post before uploading when you want its slug in the folder path. Changing a slug later does not move earlier uploads.
 
 = How do I choose year/month folders? =
 
-Include `/%year%/%monthnum%/` in your template. An empty template stores new uploads directly in the upload base. Saving plugin settings does not change WordPress's Media settings or automatically prepend date tokens. Existing saved templates keep their date tokens.
+Include `/%year%/%monthnum%/` for the post date or `/%upload_year%/%upload_month%/` for the upload date. To store files directly in the upload folder, use an empty custom template. Custom templates control the complete path beneath the upload folder; WordPress's year/month setting does not add extra folders to them.
+
+Choose **Leave to WordPress** to use its normal behavior instead. With **Settings → Media → Organize my uploads into month- and year-based folders** enabled, WordPress uses dated folders; with it disabled, files go directly in the upload folder. Uploads to backdated posts can use the post's date. Other upload plugins may also affect the destination.
 
 = Which tokens and aliases are supported? =
 
-The settings page lists the current tokens. Any registered taxonomy name can be used as `%taxonomy%`. Unknown tokens are omitted after custom token resolution. `%file_type%` is the filename-derived MIME type, for example `image/jpeg` (two directory levels); `%file_ext%` is the extension. These values do not replace WordPress's file validation.
+The settings page lists the available tokens. You can also use a taxonomy's name as a token: for example, `%product_cat%` for product categories. Unrecognized tokens are left out of the path. `%file_type%` uses the file's MIME type, such as `image/jpeg`, creating two folder levels; `%file_ext%` uses its extension, such as `jpg`.
 
 Legacy aliases remain available: `%mime_type%` → `%file_type%`, `%post_parent%` → `%parent_name%`, `%month%` → `%monthnum%`, `%ID%` → `%post_id%`, `%post_name%` → `%postname%`, and `%post_author%` → `%author%`. The removed `%permalink%` token is not supported. The older `%post_category%` and `%post_categories%` tokens are retained; prefer `%category%` for hierarchy settings.
 
@@ -260,7 +302,7 @@ Built-in post/file tokens take precedence, then custom tokens, then taxonomy and
     }
     add_filter( 'cud_generate_path', 'my_cud_final_path', 10, 2 );
 
-For unattached uploads, the parent argument to these two filters is an empty string, preserving the original final-path contract. Paths are relative to the upload base, even when written with a leading slash. Drive/URL prefixes, control characters and ` . ` or ` .. ` directory segments are rejected after filters run. Invalid settings retain the previous saved settings.
+For uploads without a parent, the parent argument to these two filters is an empty string. Paths are relative to the upload base, even when written with a leading slash. Drive/URL prefixes, control characters and ` . ` or ` .. ` directory segments are rejected after filters run. Invalid settings retain the previous saved settings.
 
 = What about programmatic imports? =
 
@@ -277,7 +319,7 @@ Changing the base on an existing site requires a separate migration of files and
 
 == Screenshots ==
 
-1. Choose an upload path using placeholders for the user, date and post name, and configure how category hierarchies become folders.
+1. Choose upload folders for posts, pages and Media Library uploads. Click placeholders to build templates and preview example destinations before uploading.
 
 
 == Additional Info ==

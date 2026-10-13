@@ -3,7 +3,7 @@
  * Plugin Name: Custom Upload Dir
  * Plugin URI: https://wordpress.org/plugins/custom-upload-dir/
  * Description: Keeps your uploaded files organized in smart folder structures.
- * Version: 3.5.0
+ * Version: 3.6.0
  * Requires at least: 5.7
  * Requires PHP: 7.4
  * Author: Ulf Benjaminsson
@@ -50,8 +50,8 @@ function cud_register_menu_item() {
 
 /** Enqueue the settings page's small, self-contained controls. */
 function cud_admin_assets() {
-	wp_enqueue_style( 'cud-settings', plugins_url( 'settings.css', __FILE__ ), array(), '3.5.0' );
-	wp_enqueue_script( 'cud-settings', plugins_url( 'settings.js', __FILE__ ), array(), '3.5.0', true );
+	wp_enqueue_style( 'cud-settings', plugins_url( 'settings.css', __FILE__ ), array(), '3.6.0' );
+	wp_enqueue_script( 'cud-settings', plugins_url( 'settings.js', __FILE__ ), array(), '3.6.0', true );
 }
 
 /** Register the option with the WordPress Settings API. */
@@ -93,6 +93,11 @@ function cud_delete_options() {
 function cud_default_options() {
 	return array(
 		'template'          => '',
+		'post_type_rules'   => array(),
+		'unattached_rule'   => array(
+			'mode'     => 'default',
+			'template' => '',
+		),
 		'test_ids'          => '',
 		'all_parents'       => true,
 		'flatten_hierarchy' => false,
@@ -114,12 +119,26 @@ function cud_get_options() {
 			if ( isset( $stored[ $key ] ) ) {
 				if ( is_bool( $default ) ) {
 					$options[ $key ] = in_array( $stored[ $key ], array( true, 1, '1', 'on' ), true );
-				} elseif ( is_string( $stored[ $key ] ) ) {
+				} elseif ( is_string( $default ) && is_string( $stored[ $key ] ) ) {
 					$options[ $key ] = $stored[ $key ];
 				}
 			}
 		}
 		$options['test_ids'] = cud_normalize_test_ids( isset( $stored['test_ids'] ) ? $stored['test_ids'] : '' );
+		if ( isset( $stored['unattached_rule'] ) ) {
+			$rule = cud_normalize_rule( $stored['unattached_rule'] );
+			if ( false !== $rule ) {
+				$options['unattached_rule'] = $rule;
+			}
+		}
+		if ( isset( $stored['post_type_rules'] ) && is_array( $stored['post_type_rules'] ) ) {
+			foreach ( $stored['post_type_rules'] as $type => $rule ) {
+				$rule = cud_normalize_rule( $rule );
+				if ( is_string( $type ) && sanitize_key( $type ) === $type && false !== $rule ) {
+					$options['post_type_rules'][ $type ] = $rule;
+				}
+			}
+		}
 	}
 	return $options;
 }
@@ -127,6 +146,46 @@ function cud_get_options() {
 /** Initialize missing settings without rewriting an existing path template. */
 function cud_install_options() {
 	update_option( 'custom_upload_dir', cud_get_options() );
+}
+
+/**
+ * Validate a rule without conflating an empty custom template with inheritance.
+ *
+ * @param mixed $rule Saved or submitted rule.
+ * @return array|false Normalized rule, or false when invalid.
+ */
+function cud_normalize_rule( $rule ) {
+	if ( ! is_array( $rule ) || ! isset( $rule['mode'], $rule['template'] ) || ! in_array( $rule['mode'], array( 'default', 'custom', 'bypass' ), true ) ) {
+		return false;
+	}
+	$template = cud_normalize_subdir( $rule['template'] );
+	return false === $template ? false : array(
+		'mode'     => $rule['mode'],
+		'template' => $template,
+	);
+}
+
+/**
+ * Select from the actual parent type; missing parents never use loop globals.
+ *
+ * @param WP_Post|null $parent_post Parent post, or null when absent/deleted.
+ * @return array Rule with the default template resolved.
+ */
+function cud_get_upload_rule( $parent_post ) {
+	$options = cud_get_options();
+	$rule    = array(
+		'mode'     => 'default',
+		'template' => '',
+	);
+	if ( $parent_post && isset( $options['post_type_rules'][ $parent_post->post_type ] ) ) {
+		$rule = $options['post_type_rules'][ $parent_post->post_type ];
+	} elseif ( ! $parent_post ) {
+		$rule = $options['unattached_rule'];
+	}
+	if ( 'default' === $rule['mode'] ) {
+		$rule['template'] = $options['template'];
+	}
+	return $rule;
 }
 
 /**
@@ -200,13 +259,15 @@ function cud_prepare_upload( $file ) {
 		// Other endpoints keep core's directory, even inside an enclosing upload.
 		$customize = 'POST' === $request->get_method() && '/wp/v2/media' === untrailingslashit( $request->get_route() );
 	}
-	$context = (object) array(
+	$context            = (object) array(
 		'post_id'   => $customize ? cud_upload_post_id( $file ) : 0,
 		'file'      => $file,
 		'customize' => $customize,
 		'subdir'    => '',
 	);
-	if ( $customize && empty( $file['error'] ) ) {
+	$rule               = cud_get_upload_rule( $context->post_id ? get_post( $context->post_id ) : null );
+	$context->customize = $customize && 'bypass' !== $rule['mode'];
+	if ( $context->customize && empty( $file['error'] ) ) {
 		$path = cud_custom_upload_dir(
 			array(
 				'basedir' => '',
@@ -309,7 +370,7 @@ function cud_xmlrpc_call( $method, $args ) {
  * @return mixed Unchanged error.
  */
 function cud_xmlrpc_prepare_upload( $error ) {
-	global $cud_rpc_file;
+	global $cud_rpc_file, $cud_uploads;
 	remove_filter( 'pre_upload_error', 'cud_xmlrpc_prepare_upload', PHP_INT_MAX );
 	$name = isset( $cud_rpc_file['name'] ) && is_string( $cud_rpc_file['name'] ) ? sanitize_file_name( $cud_rpc_file['name'] ) : '';
 	$type = wp_check_filetype( $name );
@@ -331,6 +392,15 @@ function cud_xmlrpc_prepare_upload( $error ) {
 			return $path['error'];
 		}
 		$cud_rpc_file['subdir'] = $path['subdir'];
+		$rule                   = cud_get_upload_rule( $post_id ? get_post( $post_id ) : null );
+		// Shadow an enclosing upload even when this XML-RPC upload uses WordPress.
+		$context                 = (object) array(
+			'customize' => 'bypass' !== $rule['mode'],
+			'subdir'    => $path['subdir'],
+		);
+		$cud_rpc_file['context'] = $context;
+		$cud_uploads[]           = $context;
+		add_filter( 'upload_dir', 'cud_custom_upload_dir' );
 		add_filter( 'upload_dir', 'cud_xmlrpc_upload_dir' );
 	}
 	return $error;
@@ -347,6 +417,10 @@ function cud_xmlrpc_upload_dir( $path ) {
 	remove_filter( 'upload_dir', 'cud_xmlrpc_upload_dir' );
 	$file         = $cud_rpc_file;
 	$cud_rpc_file = null;
+	cud_finish_upload( $file['context'] );
+	if ( ! $file['context']->customize ) {
+		return $path;
+	}
 	if ( empty( $path['error'] ) ) {
 		$path['subdir'] = $file['subdir'];
 		$path['path']   = $path['basedir'] . $path['subdir'];
@@ -358,12 +432,13 @@ function cud_xmlrpc_upload_dir( $path ) {
 /**
  * Select a relative destination; core creates directories and moves files.
  *
- * @param array    $path    Core upload directory data.
- * @param int|null $post_id Explicit parent, or current upload context.
- * @param array    $file    Explicit file context.
+ * @param array                  $path    Core upload directory data.
+ * @param int|null               $post_id Explicit parent, or current upload context.
+ * @param array                  $file    Explicit file context.
+ * @param DateTimeImmutable|null $upload_date Captured site-local time for previews.
  * @return array Directory data, or an error for an invalid generated path.
  */
-function cud_custom_upload_dir( $path, $post_id = null, $file = array() ) {
+function cud_custom_upload_dir( $path, $post_id = null, $file = array(), $upload_date = null ) {
 	global $cud_uploads;
 	if ( ! empty( $path['error'] ) ) {
 		return $path;
@@ -375,7 +450,12 @@ function cud_custom_upload_dir( $path, $post_id = null, $file = array() ) {
 		}
 		$subdir = $context->subdir;
 	} else {
-		$subdir = cud_generate_path( $post_id, $file );
+		$post_id = null === $post_id ? cud_upload_post_id( $file ) : max( 0, (int) $post_id );
+		$rule    = cud_get_upload_rule( $post_id ? get_post( $post_id ) : null );
+		if ( 'bypass' === $rule['mode'] ) {
+			return $path;
+		}
+		$subdir = cud_generate_path( $post_id, $file, $upload_date );
 	}
 	$subdir = cud_normalize_subdir( $subdir );
 	if ( false === $subdir ) {
@@ -420,16 +500,18 @@ function cud_get_template( $post_type = false ) {
 /**
  * Expand a template from explicit post and file data without changing globals.
  *
- * @param int|null $post_id Parent ID; zero means unattached, null resolves request context.
- * @param array    $file    File data, including its original name.
+ * @param int|null               $post_id Parent ID; zero means unattached, null resolves request context.
+ * @param array                  $file    File data, including its original name.
+ * @param DateTimeImmutable|null $upload_date Captured site-local time, or now.
  * @return string Relative upload subdirectory.
  */
-function cud_generate_path( $post_id = null, $file = array() ) {
+function cud_generate_path( $post_id = null, $file = array(), $upload_date = null ) {
 	$post_id      = null === $post_id ? cud_upload_post_id( $file ) : max( 0, (int) $post_id );
 	$my_post      = $post_id ? get_post( $post_id ) : null;
 	$current_user = wp_get_current_user();
 	$user_id      = $current_user->ID;
-	$customdir    = cud_get_template( 'template' );
+	$rule         = cud_get_upload_rule( $my_post );
+	$customdir    = $rule['template'];
 	$customdir    = strtr(
 		$customdir,
 		array(
@@ -443,7 +525,9 @@ function cud_generate_path( $post_id = null, $file = array() ) {
 	$post_type    = '';
 	$post_name    = '';
 	$author       = '';
-	$date         = current_time( 'Y m d H i s' );
+	// Capture once; scoped uploads retain the generated path through core's lookups.
+	$upload_date = null === $upload_date ? current_datetime() : $upload_date;
+	$date        = $upload_date->format( 'Y m d H i s' );
 	if ( $my_post ) {
 		$post_id   = $my_post->ID;
 		$post_type = $my_post->post_type;
@@ -464,18 +548,23 @@ function cud_generate_path( $post_id = null, $file = array() ) {
 	$date         = explode( ' ', $date );
 	$filetype     = ! empty( $file['name'] ) ? wp_check_filetype( $file['name'] ) : array();
 	$replacements = array(
-		'%post_id%'   => (string) $post_id,
-		'%postname%'  => $post_name,
-		'%post_type%' => $post_type,
-		'%year%'      => $date[0],
-		'%monthnum%'  => $date[1],
-		'%month%'     => $date[1],
-		'%day%'       => $date[2],
-		'%hour%'      => $date[3],
-		'%minute%'    => $date[4],
-		'%second%'    => $date[5],
-		'%file_ext%'  => ! empty( $filetype['ext'] ) ? $filetype['ext'] : '',
-		'%file_type%' => ! empty( $filetype['type'] ) ? $filetype['type'] : '',
+		'%upload_year%'     => $upload_date->format( 'Y' ),
+		'%upload_month%'    => $upload_date->format( 'm' ),
+		'%upload_day%'      => $upload_date->format( 'd' ),
+		'%author_id%'       => $author ? (string) $author : '',
+		'%current_user_id%' => $user_id ? (string) $user_id : '',
+		'%post_id%'         => (string) $post_id,
+		'%postname%'        => $post_name,
+		'%post_type%'       => $post_type,
+		'%year%'            => $date[0],
+		'%monthnum%'        => $date[1],
+		'%month%'           => $date[1],
+		'%day%'             => $date[2],
+		'%hour%'            => $date[3],
+		'%minute%'          => $date[4],
+		'%second%'          => $date[5],
+		'%file_ext%'        => ! empty( $filetype['ext'] ) ? $filetype['ext'] : '',
+		'%file_type%'       => ! empty( $filetype['type'] ) ? $filetype['type'] : '',
 	);
 	// Only query user, parent and taxonomy data when the template needs it.
 	$resolvers = array(
@@ -803,6 +892,26 @@ function cud_sanitize_settings( $options ) {
 	}
 	$clean['template'] = $path;
 	$clean['test_ids'] = cud_normalize_test_ids( $clean['test_ids'] );
+	$rules             = $previous['post_type_rules'];
+	if ( ! is_array( $clean['post_type_rules'] ) ) {
+		add_settings_error( 'custom_upload_dir', 'cud_invalid_rules', __( 'Settings were not saved: an upload rule was invalid.', 'custom-upload-dir' ) );
+		return $previous;
+	}
+	foreach ( $clean['post_type_rules'] as $type => $rule ) {
+		$rule = cud_normalize_rule( $rule );
+		if ( ! is_string( $type ) || '' === $type || sanitize_key( $type ) !== $type || false === $rule ) {
+			add_settings_error( 'custom_upload_dir', 'cud_invalid_rules', __( 'Settings were not saved: an upload rule was invalid.', 'custom-upload-dir' ) );
+			return $previous;
+		}
+		$rules[ $type ] = $rule;
+	}
+	$clean['post_type_rules'] = $rules;
+	$rule                     = cud_normalize_rule( $clean['unattached_rule'] );
+	if ( false === $rule ) {
+		add_settings_error( 'custom_upload_dir', 'cud_invalid_rules', __( 'Settings were not saved: an upload rule was invalid.', 'custom-upload-dir' ) );
+		return $previous;
+	}
+	$clean['unattached_rule'] = $rule;
 	foreach ( array( 'all_parents', 'flatten_hierarchy', 'only_leaf_nodes', 'only_base_nodes' ) as $key ) {
 		if ( ! in_array( $clean[ $key ], array( true, false, 1, 0, '1', '0', 'on', '' ), true ) ) {
 			add_settings_error( 'custom_upload_dir', 'cud_invalid_checkbox', __( 'Settings were not saved: a checkbox value was invalid.', 'custom-upload-dir' ) );
@@ -817,6 +926,43 @@ function cud_sanitize_settings( $options ) {
 	return $clean;
 }
 
+/**
+ * Render one rule using the same controls for every upload context.
+ *
+ * @param string $name Option field prefix.
+ * @param string $id Unique control ID.
+ * @param string $label Context label.
+ * @param array  $rule Rule to edit.
+ */
+function cud_rule_fields( $name, $id, $label, $rule ) {
+	?>
+	<fieldset class="cud-rule">
+		<legend><strong><?php echo esc_html( $label ); ?></strong></legend>
+		<p><label for="<?php echo esc_attr( $id . '-mode' ); ?>"><?php esc_html_e( 'Routing', 'custom-upload-dir' ); ?></label>
+		<select id="<?php echo esc_attr( $id . '-mode' ); ?>" name="<?php echo esc_attr( $name . '[mode]' ); ?>">
+			<?php foreach ( cud_rule_labels() as $mode => $text ) : ?>
+				<option value="<?php echo esc_attr( $mode ); ?>" <?php selected( $rule['mode'], $mode ); ?>><?php echo esc_html( $text ); ?></option>
+			<?php endforeach; ?>
+		</select></p>
+		<p><label for="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Custom template', 'custom-upload-dir' ); ?></label>
+		<input id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name . '[template]' ); ?>" type="text" class="large-text code cud-template" value="<?php echo esc_attr( $rule['template'] ); ?>" aria-describedby="cud-rules-help" /></p>
+	</fieldset>
+	<?php
+}
+
+/**
+ * Labels shared by rule controls and previews.
+ *
+ * @return array Rule mode labels.
+ */
+function cud_rule_labels() {
+	return array(
+		'default' => __( 'Use default', 'custom-upload-dir' ),
+		'custom'  => __( 'Custom template', 'custom-upload-dir' ),
+		'bypass'  => __( 'Leave to WordPress', 'custom-upload-dir' ),
+	);
+}
+
 /** Render the settings form and read-only previews. */
 function cud_option_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -824,23 +970,28 @@ function cud_option_page() {
 	}
 	$options    = cud_get_options();
 	$tokens     = array(
-		'file_type'    => __( 'The file MIME type (for example image/jpeg)', 'custom-upload-dir' ),
-		'file_ext'     => __( 'The file extension', 'custom-upload-dir' ),
-		'post_id'      => __( 'The post ID', 'custom-upload-dir' ),
-		'author'       => __( 'The post author', 'custom-upload-dir' ),
-		'author_role'  => __( "The post author's role", 'custom-upload-dir' ),
-		'postname'     => __( "The post's URL slug", 'custom-upload-dir' ),
-		'parent_name'  => __( 'The parent URL slug', 'custom-upload-dir' ),
-		'post_type'    => __( 'The post type', 'custom-upload-dir' ),
-		'year'         => __( "The post's year (YYYY)", 'custom-upload-dir' ),
-		'monthnum'     => __( "The post's month (MM)", 'custom-upload-dir' ),
-		'day'          => __( "The post's day (DD)", 'custom-upload-dir' ),
-		'hour'         => __( 'The hour (HH)', 'custom-upload-dir' ),
-		'minute'       => __( 'The minute (MM)', 'custom-upload-dir' ),
-		'second'       => __( 'The second (SS)', 'custom-upload-dir' ),
-		'current_user' => __( 'The currently logged in user', 'custom-upload-dir' ),
-		'category'     => __( "The post's categories (see: Taxonomies)", 'custom-upload-dir' ),
-		'post_tag'     => __( "The post's tags (see: Taxonomies)", 'custom-upload-dir' ),
+		'file_type'       => __( 'The file MIME type (for example image/jpeg)', 'custom-upload-dir' ),
+		'file_ext'        => __( 'The file extension', 'custom-upload-dir' ),
+		'post_id'         => __( 'The post ID', 'custom-upload-dir' ),
+		'author'          => __( 'The post author', 'custom-upload-dir' ),
+		'author_id'       => __( "The post author's numeric ID", 'custom-upload-dir' ),
+		'author_role'     => __( "The post author's role", 'custom-upload-dir' ),
+		'postname'        => __( "The post's URL slug", 'custom-upload-dir' ),
+		'parent_name'     => __( 'The parent URL slug', 'custom-upload-dir' ),
+		'post_type'       => __( 'The post type', 'custom-upload-dir' ),
+		'year'            => __( "The post's year (YYYY)", 'custom-upload-dir' ),
+		'monthnum'        => __( "The post's month (MM)", 'custom-upload-dir' ),
+		'day'             => __( "The post's day (DD)", 'custom-upload-dir' ),
+		'upload_year'     => __( 'The upload year in the site timezone (YYYY)', 'custom-upload-dir' ),
+		'upload_month'    => __( 'The upload month in the site timezone (MM)', 'custom-upload-dir' ),
+		'upload_day'      => __( 'The upload day in the site timezone (DD)', 'custom-upload-dir' ),
+		'hour'            => __( 'The hour (HH)', 'custom-upload-dir' ),
+		'minute'          => __( 'The minute (MM)', 'custom-upload-dir' ),
+		'second'          => __( 'The second (SS)', 'custom-upload-dir' ),
+		'current_user'    => __( 'The currently logged in user', 'custom-upload-dir' ),
+		'current_user_id' => __( "The uploader's numeric ID", 'custom-upload-dir' ),
+		'category'        => __( "The post's categories (see: Taxonomies)", 'custom-upload-dir' ),
+		'post_tag'        => __( "The post's tags (see: Taxonomies)", 'custom-upload-dir' ),
 	);
 	$checkboxes = array(
 		'all_parents'       => __( 'Always get all parents', 'custom-upload-dir' ),
@@ -858,15 +1009,40 @@ function cud_option_page() {
 				<tr>
 					<th scope="row"><label for="template"><?php esc_html_e( 'Build a path template:', 'custom-upload-dir' ); ?></label></th>
 					<td>
-						<input id="template" name="custom_upload_dir[template]" type="text" class="large-text code" value="<?php echo esc_attr( $options['template'] ); ?>" aria-describedby="cud-template-help" />
-						<p class="description" id="cud-template-help"><?php esc_html_e( 'Separate folders with /. This template applies to all post types. An empty template uses the upload base folder.', 'custom-upload-dir' ); ?></p>
+						<input id="template" name="custom_upload_dir[template]" type="text" class="large-text code cud-template" value="<?php echo esc_attr( $options['template'] ); ?>" aria-describedby="cud-template-help" />
+						<p class="description" id="cud-template-help"><?php esc_html_e( 'Separate folders with /. This is the default template. An empty template uses the upload base folder. Token buttons add to the last template field you focused.', 'custom-upload-dir' ); ?></p>
 						<p class="description"><?php esc_html_e( 'Include /%year%/%monthnum%/ if you want dated folders. Saving here does not change the WordPress Media settings or automatically add date folders.', 'custom-upload-dir' ); ?></p>
 						<ul class="cud-tokens">
 							<?php foreach ( $tokens as $token => $description ) : ?>
 								<li><button type="button" class="button cud-token" data-token="<?php echo esc_attr( '%' . $token . '%' ); ?>"><code><?php echo esc_html( '%' . $token . '%' ); ?></code></button> <?php echo esc_html( $description ); ?></li>
 							<?php endforeach; ?>
 						</ul>
-						<p class="description"><?php esc_html_e( 'Custom taxonomy names also work as %taxonomy% tokens. Dates use the post date; uploads without a post use current site-local time and omit post-specific tokens.', 'custom-upload-dir' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Custom taxonomy names also work as %taxonomy% tokens. Existing date tokens use the post date, falling back to current site-local time without a dated post. The upload_year, upload_month and upload_day tokens always use the upload date in the site timezone.', 'custom-upload-dir' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Templates by parent post type', 'custom-upload-dir' ); ?></th>
+					<td>
+						<p class="description" id="cud-rules-help"><?php esc_html_e( 'Use default keeps the template above. Custom template uses the field below, including an empty field for the upload base. Leave to WordPress keeps WordPress and other plugins in control of the directory. Rules for temporarily unavailable post types are retained.', 'custom-upload-dir' ); ?></p>
+						<?php
+						foreach ( get_post_types( array( 'show_ui' => true ), 'objects' ) as $type => $object ) {
+							if ( in_array( $type, array( 'attachment', 'wp_navigation' ), true ) ) {
+								continue;
+							}
+							$rule = isset( $options['post_type_rules'][ $type ] ) ? $options['post_type_rules'][ $type ] : array(
+								'mode'     => 'default',
+								'template' => '',
+							);
+							cud_rule_fields( 'custom_upload_dir[post_type_rules][' . $type . ']', 'cud-type-' . $type, $object->labels->name, $rule );
+						}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Uploads without a parent', 'custom-upload-dir' ); ?></th>
+					<td>
+						<?php cud_rule_fields( 'custom_upload_dir[unattached_rule]', 'cud-unattached', __( 'Unattached upload', 'custom-upload-dir' ), $options['unattached_rule'] ); ?>
+						<p class="description"><?php esc_html_e( 'Applies to Media Library uploads without a parent and uploads whose parent no longer exists. Use default preserves your existing behavior.', 'custom-upload-dir' ); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -887,16 +1063,25 @@ function cud_option_page() {
 			<?php submit_button(); ?>
 		</form>
 		<h2><?php esc_html_e( 'Saved template preview', 'custom-upload-dir' ); ?></h2>
+		<p>
+		<?php
+		$upload_date = current_datetime();
+		/* translators: %s: Example upload date and timezone. */
+		printf( esc_html__( 'Example upload time: %s. The uploader is your currently logged-in user.', 'custom-upload-dir' ), esc_html( $upload_date->format( 'Y-m-d H:i:s T' ) ) );
+		?>
+		</p>
 		<p><?php esc_html_e( 'Try to always name and save your post before uploading attachments.', 'custom-upload-dir' ); ?></p>
 		<table class="widefat striped">
-			<thead><tr><th><?php esc_html_e( 'Post', 'custom-upload-dir' ); ?></th><th><?php esc_html_e( 'Upload directory', 'custom-upload-dir' ); ?></th></tr></thead>
+			<thead><tr><th><?php esc_html_e( 'Post', 'custom-upload-dir' ); ?></th><th><?php esc_html_e( 'Routing', 'custom-upload-dir' ); ?></th><th><?php esc_html_e( 'Upload directory', 'custom-upload-dir' ); ?></th></tr></thead>
 			<tbody>
 				<?php
 				$uploads = wp_get_upload_dir();
 				$ids     = array_merge( array( 0 ), array_filter( explode( ',', $options['test_ids'] ) ) );
 				foreach ( $ids as $id ) :
 					$preview_post = $id ? get_post( (int) $id ) : null;
-					$preview      = cud_custom_upload_dir( $uploads, (int) $id, array( 'name' => 'example.jpg' ) );
+					$rule         = cud_get_upload_rule( $preview_post );
+					$labels       = cud_rule_labels();
+					$preview      = cud_custom_upload_dir( $uploads, (int) $id, array( 'name' => 'example.jpg' ), $upload_date );
 					?>
 					<tr><td>
 						<?php
@@ -909,7 +1094,11 @@ function cud_option_page() {
 							printf( esc_html__( 'Post #%d was not found; showing an unattached upload.', 'custom-upload-dir' ), (int) $id );
 						}
 						?>
-					</td><td><code><?php echo esc_html( $preview['error'] ? $preview['error'] : $preview['path'] ); ?></code></td></tr>
+					</td><td><?php echo esc_html( $labels[ $rule['mode'] ] ); ?></td><td><code><?php echo esc_html( $preview['error'] ? $preview['error'] : $preview['path'] ); ?></code>
+					<?php if ( 'bypass' === $rule['mode'] ) : ?>
+						<p class="description"><?php esc_html_e( 'Current WordPress directory example. The upload method, post date and other plugins may change it; Custom Upload Dir does not override it.', 'custom-upload-dir' ); ?></p>
+					<?php endif; ?>
+					</td></tr>
 				<?php endforeach; ?>
 			</tbody>
 		</table>

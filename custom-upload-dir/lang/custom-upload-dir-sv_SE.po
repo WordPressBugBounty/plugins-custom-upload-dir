@@ -1,16 +1,13 @@
-# Custom Upload Dir — sv_SE.
-# Distributed under the same license as the plugin (GPL-2.0-or-later).
-# Translations updated with AI assistance in October 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: Custom Upload Dir 3.5.0\n"
+"Project-Id-Version: Custom Upload Dir 3.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-upload-dir/\n"
-"POT-Creation-Date: 2026-10-12 12:00+0000\n"
+"POT-Creation-Date: 2026-10-13 12:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: custom-upload-dir\n"
-"PO-Revision-Date: 2026-10-12 12:00+0000\n"
+"PO-Revision-Date: 2026-10-13 12:00+0000\n"
 "Last-Translator: AI-assisted translation\n"
 "Language-Team: Svenska\n"
 "Language: sv_SE\n"
@@ -24,171 +21,238 @@ msgstr "Inställningar för Custom Upload Dir"
 msgid "Settings"
 msgstr "Inställningar"
 
-#: custom_upload_dir.php:382
+#: custom_upload_dir.php:462
 msgid "Custom Upload Dir: use a relative directory without a drive, URL, control characters, or . and .. segments."
 msgstr "Custom Upload Dir: använd en relativ sökväg utan enhetsbeteckning, URL, kontrolltecken eller sökvägsdelarna ”.” och ”..”."
 
-#: custom_upload_dir.php:795
+#: custom_upload_dir.php:884
 msgid "Settings were not saved: expected a settings array."
 msgstr "Inställningarna sparades inte: uppgifterna har fel format."
 
-#: custom_upload_dir.php:801
+#: custom_upload_dir.php:890
 msgid "Settings were not saved: use a path inside the upload folder, without a drive, URL, control characters, or . and .. segments."
 msgstr "Inställningarna sparades inte: använd en sökväg inom uppladdningsmappen, utan enhetsbeteckning, URL, kontrolltecken eller sökvägsdelarna ”.” och ”..”."
 
-#: custom_upload_dir.php:808
+#: custom_upload_dir.php:897 custom_upload_dir.php:903
+#: custom_upload_dir.php:911
+msgid "Settings were not saved: an upload rule was invalid."
+msgstr "Inställningarna sparades inte: en uppladdningsregel var ogiltig."
+
+#: custom_upload_dir.php:917
 msgid "Settings were not saved: a checkbox value was invalid."
 msgstr "Inställningarna sparades inte: ett kryssrutevärde var ogiltigt."
 
-#: custom_upload_dir.php:823
+#: custom_upload_dir.php:941 custom_upload_dir.php:1075
+msgid "Routing"
+msgstr "Mappval"
+
+#: custom_upload_dir.php:947 custom_upload_dir.php:961
+msgid "Custom template"
+msgstr "Egen mall"
+
+#: custom_upload_dir.php:960
+msgid "Use default"
+msgstr "Använd standard"
+
+#: custom_upload_dir.php:962
+msgid "Leave to WordPress"
+msgstr "Låt WordPress bestämma"
+
+#: custom_upload_dir.php:969
 msgid "You do not have permission to manage these settings."
 msgstr "Du har inte behörighet att ändra dessa inställningar."
 
-#: custom_upload_dir.php:827
+#: custom_upload_dir.php:973
 msgid "The file MIME type (for example image/jpeg)"
 msgstr "Filens MIME-typ (till exempel image/jpeg)"
 
-#: custom_upload_dir.php:828
+#: custom_upload_dir.php:974
 msgid "The file extension"
 msgstr "Filändelsen"
 
-#: custom_upload_dir.php:829
+#: custom_upload_dir.php:975
 msgid "The post ID"
 msgstr "Inläggets ID"
 
-#: custom_upload_dir.php:830
+#: custom_upload_dir.php:976
 msgid "The post author"
 msgstr "Inläggets författare"
 
-#: custom_upload_dir.php:831
+#: custom_upload_dir.php:977
+msgid "The post author's numeric ID"
+msgstr "Inläggsförfattarens numeriska ID"
+
+#: custom_upload_dir.php:978
 msgid "The post author's role"
 msgstr "Inläggsförfattarens roll"
 
-#: custom_upload_dir.php:832
+#: custom_upload_dir.php:979
 msgid "The post's URL slug"
 msgstr "Inläggets permalänkdel (namnet i URL:en)"
 
-#: custom_upload_dir.php:833
+#: custom_upload_dir.php:980
 msgid "The parent URL slug"
 msgstr "Det överordnade innehållets permalänkdel"
 
-#: custom_upload_dir.php:834
+#: custom_upload_dir.php:981
 msgid "The post type"
 msgstr "Inläggstypen"
 
-#: custom_upload_dir.php:835
+#: custom_upload_dir.php:982
 msgid "The post's year (YYYY)"
 msgstr "Inläggets år (ÅÅÅÅ)"
 
-#: custom_upload_dir.php:836
+#: custom_upload_dir.php:983
 msgid "The post's month (MM)"
 msgstr "Inläggets månad (MM)"
 
-#: custom_upload_dir.php:837
+#: custom_upload_dir.php:984
 msgid "The post's day (DD)"
 msgstr "Inläggets dag (DD)"
 
-#: custom_upload_dir.php:838
+#: custom_upload_dir.php:985
+msgid "The upload year in the site timezone (YYYY)"
+msgstr "Uppladdningsåret i webbplatsens tidszon (ÅÅÅÅ)"
+
+#: custom_upload_dir.php:986
+msgid "The upload month in the site timezone (MM)"
+msgstr "Uppladdningsmånaden i webbplatsens tidszon (MM)"
+
+#: custom_upload_dir.php:987
+msgid "The upload day in the site timezone (DD)"
+msgstr "Uppladdningsdagen i webbplatsens tidszon (DD)"
+
+#: custom_upload_dir.php:988
 msgid "The hour (HH)"
 msgstr "Timmen (HH)"
 
-#: custom_upload_dir.php:839
+#: custom_upload_dir.php:989
 msgid "The minute (MM)"
 msgstr "Minuten (MM)"
 
-#: custom_upload_dir.php:840
+#: custom_upload_dir.php:990
 msgid "The second (SS)"
 msgstr "Sekunden (SS)"
 
-#: custom_upload_dir.php:841
+#: custom_upload_dir.php:991
 msgid "The currently logged in user"
 msgstr "Den inloggade användaren"
 
-#: custom_upload_dir.php:842
+#: custom_upload_dir.php:992
+msgid "The uploader's numeric ID"
+msgstr "Uppladdarens numeriska ID"
+
+#: custom_upload_dir.php:993
 msgid "The post's categories (see: Taxonomies)"
 msgstr "Inläggets kategorier (se taxonomiinställningarna)"
 
-#: custom_upload_dir.php:843
+#: custom_upload_dir.php:994
 msgid "The post's tags (see: Taxonomies)"
 msgstr "Inläggets etiketter (se taxonomiinställningarna)"
 
-#: custom_upload_dir.php:846
+#: custom_upload_dir.php:997
 msgid "Always get all parents"
 msgstr "Ta alltid med alla överordnade nivåer"
 
-#: custom_upload_dir.php:847
+#: custom_upload_dir.php:998
 msgid "Flat filesystem (no subfolders for children)"
 msgstr "Platt mappstruktur (inga undermappar för underordnade termer)"
 
-#: custom_upload_dir.php:848
+#: custom_upload_dir.php:999
 msgid "Ignore parents (use only leaf nodes)"
 msgstr "Ignorera överordnade nivåer (använd bara termer utan underordnade termer)"
 
-#: custom_upload_dir.php:849
+#: custom_upload_dir.php:1000
 msgid "Ignore children (use only the root of hierarchy)"
 msgstr "Ignorera underordnade nivåer (använd bara den översta nivån)"
 
-#: custom_upload_dir.php:854
+#: custom_upload_dir.php:1005
 msgid "Choose where new uploads are stored. Existing files and their URLs are not moved or renamed."
 msgstr "Välj var nya uppladdningar ska sparas. Befintliga filer flyttas inte eller byter namn, och deras URL:er ändras inte."
 
-#: custom_upload_dir.php:859
+#: custom_upload_dir.php:1010
 msgid "Build a path template:"
 msgstr "Skapa en sökvägsmall:"
 
-#: custom_upload_dir.php:862
-msgid "Separate folders with /. This template applies to all post types. An empty template uses the upload base folder."
-msgstr "Skilj mappar åt med /. Mallen gäller alla inläggstyper. En tom mall använder uppladdningarnas basmapp."
+#: custom_upload_dir.php:1013
+msgid "Separate folders with /. This is the default template. An empty template uses the upload base folder. Token buttons add to the last template field you focused."
+msgstr "Skilj mappar åt med /. Detta är standardmallen. En tom mall använder uppladdningarnas basmapp. Platshållarknapparna lägger till i det mallfält du senast fokuserade."
 
-#: custom_upload_dir.php:863
+#: custom_upload_dir.php:1014
 msgid "Include /%year%/%monthnum%/ if you want dated folders. Saving here does not change the WordPress Media settings or automatically add date folders."
 msgstr "Ta med /%year%/%monthnum%/ om du vill ha datummappar. När du sparar här ändras inte WordPress medieinställningar, och datummappar läggs inte till automatiskt."
 
-#: custom_upload_dir.php:869
-msgid "Custom taxonomy names also work as %taxonomy% tokens. Dates use the post date; uploads without a post use current site-local time and omit post-specific tokens."
-msgstr "Namn på egna taxonomier fungerar också som %taxonomy%-platshållare. Datum hämtas från inlägget. Uppladdningar utan koppling till ett inlägg använder aktuell tid i webbplatsens tidszon och utelämnar inläggsspecifika platshållare."
+#: custom_upload_dir.php:1020
+msgid "Custom taxonomy names also work as %taxonomy% tokens. Existing date tokens use the post date, falling back to current site-local time without a dated post. The upload_year, upload_month and upload_day tokens always use the upload date in the site timezone."
+msgstr "Egna taxonominamn fungerar också som %taxonomy%-platshållare. Befintliga datumplatshållare använder inläggets datum, eller webbplatsens aktuella lokala tid om ett daterat inlägg saknas. Platshållarna upload_year, upload_month och upload_day använder alltid uppladdningsdatumet i webbplatsens tidszon."
 
-#: custom_upload_dir.php:873
-msgid "Settings for taxonomy hierarchies:"
-msgstr "Inställningar för taxonomihierarkier:"
+#: custom_upload_dir.php:1024
+msgid "Templates by parent post type"
+msgstr "Mallar efter det överordnade inläggets typ"
 
-#: custom_upload_dir.php:879
-msgid "For example: /animals/cats, /animals-cats when flattened, /cats for leaves only, or /animals for roots only. Same-level terms are sorted alphabetically. Leaves-only takes precedence over the parent and root options."
-msgstr "Till exempel: /animals/cats, /animals-cats med platt struktur, /cats för enbart termer utan underordnade termer, eller /animals för enbart översta nivån. Termer på samma nivå sorteras alfabetiskt. Alternativet ”Ignorera överordnade nivåer” har företräde framför alternativen för överordnade och översta nivåer."
+#: custom_upload_dir.php:1026
+msgid "Use default keeps the template above. Custom template uses the field below, including an empty field for the upload base. Leave to WordPress keeps WordPress and other plugins in control of the directory. Rules for temporarily unavailable post types are retained."
+msgstr "Använd standard behåller mallen ovan. Egen mall använder fältet nedan; ett tomt fält betyder uppladdningarnas basmapp. Låt WordPress bestämma låter WordPress och andra tillägg styra mappen. Regler för tillfälligt otillgängliga inläggstyper behålls."
 
-#: custom_upload_dir.php:883
-msgid "Preview post IDs"
-msgstr "Inläggs-ID:n för förhandsvisning"
+#: custom_upload_dir.php:1042
+msgid "Uploads without a parent"
+msgstr "Uppladdningar utan överordnat inlägg"
 
-#: custom_upload_dir.php:884
-msgid "Enter comma-separated post IDs, then save to refresh the preview. Previews use the saved template and a sample file named example.jpg; no folders are created."
-msgstr "Ange inläggs-ID:n åtskilda med kommatecken och spara för att uppdatera förhandsvisningen. Den använder den sparade mallen och en exempelfil med namnet example.jpg. Inga mappar skapas."
-
-#: custom_upload_dir.php:889
-msgid "Saved template preview"
-msgstr "Förhandsvisning av sparad mall"
-
-#: custom_upload_dir.php:890
-msgid "Try to always name and save your post before uploading attachments."
-msgstr "Ge helst alltid inlägget ett namn och spara det innan du laddar upp bilagor."
-
-#: custom_upload_dir.php:892
-msgid "Post"
-msgstr "Inlägg"
-
-#: custom_upload_dir.php:892
-msgid "Upload directory"
-msgstr "Uppladdningsmapp"
-
-#: custom_upload_dir.php:904
+#: custom_upload_dir.php:1044 custom_upload_dir.php:1089
 msgid "Unattached upload"
 msgstr "Uppladdning utan koppling till inlägg"
 
+#: custom_upload_dir.php:1045
+msgid "Applies to Media Library uploads without a parent and uploads whose parent no longer exists. Use default preserves your existing behavior."
+msgstr "Gäller uppladdningar i mediebiblioteket utan överordnat inlägg och uppladdningar vars överordnade inlägg inte längre finns. Använd standard behåller det befintliga beteendet."
+
+#: custom_upload_dir.php:1049
+msgid "Settings for taxonomy hierarchies:"
+msgstr "Inställningar för taxonomihierarkier:"
+
+#: custom_upload_dir.php:1055
+msgid "For example: /animals/cats, /animals-cats when flattened, /cats for leaves only, or /animals for roots only. Same-level terms are sorted alphabetically. Leaves-only takes precedence over the parent and root options."
+msgstr "Till exempel: /animals/cats, /animals-cats med platt struktur, /cats för enbart termer utan underordnade termer, eller /animals för enbart översta nivån. Termer på samma nivå sorteras alfabetiskt. Alternativet ”Ignorera överordnade nivåer” har företräde framför alternativen för överordnade och översta nivåer."
+
+#: custom_upload_dir.php:1059
+msgid "Preview post IDs"
+msgstr "Inläggs-ID:n för förhandsvisning"
+
+#: custom_upload_dir.php:1060
+msgid "Enter comma-separated post IDs, then save to refresh the preview. Previews use the saved template and a sample file named example.jpg; no folders are created."
+msgstr "Ange inläggs-ID:n åtskilda med kommatecken och spara för att uppdatera förhandsvisningen. Den använder den sparade mallen och en exempelfil med namnet example.jpg. Inga mappar skapas."
+
+#: custom_upload_dir.php:1065
+msgid "Saved template preview"
+msgstr "Förhandsvisning av sparad mall"
+
+#. %s: Example upload date and timezone.
+#: custom_upload_dir.php:1070
+#, php-format
+msgid "Example upload time: %s. The uploader is your currently logged-in user."
+msgstr "Exemplets uppladdningstid: %s. Uppladdaren är din nu inloggade användare."
+
+#: custom_upload_dir.php:1073
+msgid "Try to always name and save your post before uploading attachments."
+msgstr "Ge helst alltid inlägget ett namn och spara det innan du laddar upp bilagor."
+
+#: custom_upload_dir.php:1075
+msgid "Post"
+msgstr "Inlägg"
+
+#: custom_upload_dir.php:1075
+msgid "Upload directory"
+msgstr "Uppladdningsmapp"
+
 #. %d: A post ID entered for preview.
-#: custom_upload_dir.php:909
+#: custom_upload_dir.php:1094
 #, php-format
 msgid "Post #%d was not found; showing an unattached upload."
 msgstr "Inlägget #%d hittades inte. En uppladdning utan koppling till inlägg visas i stället."
+
+#: custom_upload_dir.php:1099
+msgid "Current WordPress directory example. The upload method, post date and other plugins may change it; Custom Upload Dir does not override it."
+msgstr "Exempel på WordPress nuvarande mapp. Uppladdningsmetoden, inläggets datum och andra tillägg kan ändra den; Custom Upload Dir åsidosätter den inte."
 
 #: custom_upload_dir.php
 msgid "Custom Upload Dir"
