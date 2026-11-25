@@ -3,7 +3,7 @@
  * Plugin Name: Custom Upload Dir
  * Plugin URI: https://wordpress.org/plugins/custom-upload-dir/
  * Description: Keeps your uploaded files organized in smart folder structures.
- * Version: 3.6.0
+ * Version: 3.6.1
  * Requires at least: 5.7
  * Requires PHP: 7.4
  * Author: Ulf Benjaminsson
@@ -15,6 +15,10 @@
  *
  * @package CustomUploadDir
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 add_action( 'plugins_loaded', 'cud_init' );
 add_action( 'init', 'cud_load_textdomain' );

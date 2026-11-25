@@ -3,8 +3,8 @@ Contributors: ulfben
 Donate link: https://www.amazon.com/gp/registry/wishlist/2QB6SQ5XX2U0N/105-3209188-5640446?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=21&y=17
 Tags: upload, organize, files, media
 Requires at least: 5.7
-Tested up to: 7.1.3
-Stable tag: 3.6.0
+Tested up to: 7.2
+Stable tag: 3.6.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -71,6 +71,10 @@ For example, an image uploaded on October 13, 2026 to a post dated March 5, 2019
 Created by [Ulf Benjaminsson](https://www.ulfbenjaminsson.com).
 
 == Changelog ==
+
+= 3.6.1 (2026-11-25) =
+
+* Prevent direct access to the main PHP file outside WordPress.
 
 = 3.6.0 (2026-10-13) =
 
